@@ -128,17 +128,11 @@ As shown in Fig 4, the histogram of the model’s residual values is fairly symm
 
 > Figure 5. QQ plot of the "best" model.
 
-Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in the notebook.
-
-![](images/influential_points.png)
-
-> Figure 6. influence plot of the "best" model.
-
-In order to confirm that it makes sense to construct a linear model from this data, we visualize the initial full model’s fitted and residual values (Fig 7) to detect any presence of heteroscedasticity, which would violate another fundamental assumption of the classical linear regression model. Although we rejected the null and concluded that there exists heteroscedasticity in the model by the Breusch-Pagan test. We can see residuals scattered around zero in Fig 7. Also considering that the sample size is large (p/n>30), the skewness of data is not expected to impact the model estimation or inference very much.
+In order to confirm that it makes sense to construct a linear model from this data, we visualize the initial full model’s fitted and residual values (Fig 6) to detect any presence of heteroscedasticity, which would violate another fundamental assumption of the classical linear regression model. Although we rejected the null and concluded that there exists heteroscedasticity in the model by the Breusch-Pagan test. We can see residuals scattered around zero in Fig 6. Also considering that the sample size is large (p/n>30), the skewness of data is not expected to impact the model estimation or inference very much.
 
 ![](images/residual_fittedvalues.png)
 
-> Figure 7. Fitted values vs. residuals plot of the "best" model.
+> Figure 6. Fitted values vs. residuals plot of the "best" model.
 
 After scrutinizing the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
 
@@ -147,7 +141,13 @@ After scrutinizing the plot between Y and X, I found that LotArea suffers from s
   <img src="images/lotarea_price_log.png" width="400" /> 
 </p>
 
-> Figure 8. Scatter plot of SalePrice over LotArea. Before the log transformation (left), After the log transformation (right).
+> Figure 7. Scatter plot of SalePrice over LotArea. Before the log transformation (left), After the log transformation (right).
+
+Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in the notebook.
+
+![](images/influential_points.png)
+
+> Figure 8. influence plot of the "best" model.
 
 
 # Conclusion
