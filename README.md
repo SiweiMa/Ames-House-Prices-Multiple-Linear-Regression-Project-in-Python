@@ -146,6 +146,7 @@ After scrutinizing the plot between Y and X, I found that LotArea suffers from s
   <img src="images/lotarea_price_linear.png" width="400" />
   <img src="images/lotarea_price_log.png" width="400" /> 
 </p>
+
 > Figure 8. Scatter plot of SalePrice over LotArea. Before the log transformation (left), After the log transformation (right).
 
 
