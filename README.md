@@ -12,6 +12,7 @@ Given [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), the projec
 The data of this project came from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques). 
 
 **Data Dictionary**
+
 As we categorize similar variables, we can see that some variables have very similar information, such as MS90 in MSSubClass and Duplx in BldgType are exactly identical. The data structure issue will be detailed discussed in the initial processing section.
 
 |Category|Index|Name|
