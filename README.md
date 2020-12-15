@@ -1,18 +1,18 @@
 # Multiple Linear Regression Project: Ames House Prices
-*The repository is a part of final project of course MSDS 601.* 
+*The repository is a part of the final project in course MSDS 601.* 
 
 #### by [Siwei Ma](https://www.linkedin.com/in/siwei-ma-28345856/)
 
 
 # Executive Summary
-Give [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), the project started with an exploratory data analysis (EDA) to identify the missing values, suspicious data, and redundant variables. Then I performed a mixed stepwise selection to reduce the set of variables and select the best model based on AIC, BIC, and adjust R-squared. With the best model selected, the model assumptions were checked regarding normality, homoscedasticity, collinearity, and linearity between response and predictors. Several solutions were proposed to solve the assumption violation. The model was then tested on unseed data and scored on Root-Mean-Squared-Error (RMSE).
+Give [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), the project started with an exploratory data analysis (EDA) to identify the missing values, suspicious data, and redundant variables. Then I performed a mixed stepwise selection to reduce the set of variables and select the best model based on AIC, BIC, and adjust R-squared. With the best model selected, the model assumptions were checked regarding normality, homoscedasticity, collinearity, and linearity between response and predictors. Several solutions were proposed to solve the assumption violation. The model was then tested on unseen data and scored on Root-Mean-Squared-Error (RMSE).
 
 # Data Summary
 **Data source**
 The data of this project came from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques). 
 
 **Data Dictionary**
-As we categorize the similar variables, we can see that some variable have very similar information, such as MS90 in MSSubClass and Duplx in BldgType are exactly identical. The data structure issue will be detailed discussed in initial processing section.
+As we categorize similar variables, we can see that some variables have very similar information, such as MS90 in MSSubClass and Duplx in BldgType are exactly identical. The data structure issue will be detailed discussed in the initial processing section.
 
 |Category|Index|Name|
 |--|--|--|
@@ -89,7 +89,7 @@ As we categorize the similar variables, we can see that some variable have very 
 
 # Process
 ## Data analysis
-To prepare the data for modelling, we list the varialbes with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, for example, in variable `Alley`, we assume that the missing value means that the house has no alley. In other cases, I assigned the values to missing cells based on the context. For example, the data indicates that a house indeed has a kitchen but `KitchenQual` information is missing. Thus, I filled the null with Typical/Average(TA). See the notebook for more details.
+To prepare the data for modeling, we list the variables with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, for example, in variable `Alley`, we assume that the missing value means that the house has no alley. In other cases, I assigned the values to missing cells based on the context. For example, the data indicates that a house indeed has a kitchen but `KitchenQual` information is missing. Thus, I filled the null with Typical/Average(TA). See the notebook for more details.
 
 ![](images/missing_values.png)
 
@@ -101,9 +101,9 @@ Also, as mentioned by [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.
 
 > Figure 2. Suspicious data.
 
-Then we changed all categorical predictors into dummies. Note that `pd.get_dummies(data, drop_first=True)` sets the reference level based on alphabet which is not applicable for this project. If the proportion of cases in the reference level is small, we expect to have severe multicollinearity issue. In order to mitigate the multicollinearity, we set the dummy with largest proportion of cases as reference level.
+Then we changed all categorical predictors into dummies. Note that `pd.get_dummies(data, drop_first=True)` sets the reference level based on the alphabet which is not applicable for this project. If the proportion of cases in the reference level is small, we expect to have a severe multicollinearity issue. In order to mitigate the multicollinearity, we set the dummy with the largest proportion of cases as the reference level.
 
-Since multicollinearity between any of the predictors in the model will result in less reliable t-tests for the significance of a predictor, we decided to calculate the variance inflation factors (VIF’s) for the candidate predictor variables. The full initial model consists of 219 predictors with all of the attendant dummy variables. We iteratively check VIF scores for all parameters in the model, identify a few with the most extreme VIF’s, and remove them from the pool of candidates. For example, we found that `None` in `GarageFinish` are exactly the same as `None` in `GarageType`. After removing, the amount of parameters with a VIF beyond the threshold in the full model decreases to 29, with a majority of them being attendant dummy variables. But we won't drop more. Although Multicollinearity could result in a higher p-values and it becomes difficult for us to examine the relationship between the each predictor and response, we will see that we can still identify the significant terms in model selection.
+Since multicollinearity between any of the predictors in the model will result in less reliable t-tests for the significance of a predictor, we decided to calculate the variance inflation factors (VIF’s) for the candidate predictor variables. The full initial model consists of 219 predictors with all of the attendant dummy variables. We iteratively check VIF scores for all parameters in the model, identify a few with the most extreme VIF’s, and remove them from the pool of candidates. For example, we found that `None` in `GarageFinish` are exactly the same as `None` in `GarageType`. After removing, the amount of parameters with a VIF beyond the threshold in the full model decreases to 29, with a majority of them being attendant dummy variables. But we won't drop more. Although Multicollinearity could result in higher p-values and it becomes difficult for us to examine the relationship between each predictor and response, we will see that we can still identify the significant terms in model selection.
 
 In addition, I also perform log-transformation on response to make sure that predicting expensive houses and cheap houses will affect the result equally.
 
@@ -112,9 +112,9 @@ After dropping some redundant variables, we still have 219 variables. It is natu
 
 ![](images/selection.png)
 
-> Figure 3. AIC, BIC and adjusted $R^2$ are shown for the best models of each model number.
+> Figure 3. AIC, BIC, and adjusted R-squared are shown for the best models of each model number.
 
-As BIC penalizes model complexity more heavily compared with AIC and prevent false positive findings more effectively, we chose BIC as model selection criteria to select the best model.
+As BIC penalizes model complexity more heavily compared with AIC and prevents false-positive findings more effectively, we chose BIC as model selection criteria to select the best model.
 
 ## Model diagnostics
 
@@ -128,19 +128,19 @@ As shown in Fig 4, the histogram of the model’s residual values is fairly symm
 
 > Figure 5. QQ plot of the "best" model.
 
-Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of the a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in notebook.
+Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in the notebook.
 
 ![](images/influential_points.png)
 
 > Figure 6. influence plot of the "best" model.
 
-In order to confirm that it makes sense to construct a linear model from this data, we visualize the initial full model’s fitted and residual values (Fig 7) to detect any presence of heteroscedasticity, which would violate another fundamental assumption of the classical linear regression model. Altough we rejected the null and concluded that there exists heteroscedasticity in the model by Breusch-Pagan test. We can see residuals scattered around zero in Fig 7. Also considering that the sample size is large (p/n>30), the skewness of data is not expected to impact the model estimation or inference very much.
+In order to confirm that it makes sense to construct a linear model from this data, we visualize the initial full model’s fitted and residual values (Fig 7) to detect any presence of heteroscedasticity, which would violate another fundamental assumption of the classical linear regression model. Although we rejected the null and concluded that there exists heteroscedasticity in the model by the Breusch-Pagan test. We can see residuals scattered around zero in Fig 7. Also considering that the sample size is large (p/n>30), the skewness of data is not expected to impact the model estimation or inference very much.
 
 ![](images/residual_fittedvalues.png)
 
 > Figure 7. Fitted values vs. residuals plot of the "best" model.
 
-After scrutinize the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
+After scrutinizing the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
 
        |
 :-------------------------:|:-------------------------:
@@ -148,10 +148,10 @@ After scrutinize the plot between Y and X, I found that LotArea suffers from sev
 
 # Conclusion
 
-Based on our model trained on the Ames, Iowa housing prices data, we find that numeric features such as `OverallQual`, `OverallCond`, `GrLivArea`, `GarageCars` etc. have positive influence on sales price. The categorical features such as `NridgHt` in `Neighborhood`, `BrkFace` in `Exterior1st` etc. have positive influence on sales price. In contrast, the categorical features such as no `CentralAir`, commerial zoning classification (C) in `MSZoning` etc. have negative influence on sales price. See notebook for more details.
+Based on our model trained on the Ames, Iowa housing prices data, we find that numeric features such as `OverallQual`, `OverallCond`, `GrLivArea`, `GarageCars` etc. have a positive influence on the sales price. The categorical features such as `NridgHt` in `Neighborhood`, `BrkFace` in `Exterior1st` etc. have a positive influence on the sales price. In contrast, the categorical features such as no `CentralAir`, commercial zoning classification (C) in `MSZoning` etc. have a negative influence on the sales price. See the notebook for more details.
 
-The predicted R-squared is 0.928 and regular R-squared is 0.934. Since there is only a minor discrepancy between predicted R-squared and regular R-sqular, it seems that we did not overfit the model.
+The predicted R-squared is 0.928 and the regular R-squared is 0.934. Since there is only a minor discrepancy between predicted R-squared and regular R-squared, it seems that we did not have a severe overfitting issue in the model.
 
 # Prediction
 
-The final model was then tested on unseed data and submitted to Kaggle to be evalued by RMSE. The RMSE is 0.13637.
+The final model was then tested on unseen data and submitted to Kaggle to be evaluated by RMSE. The RMSE is 0.13637.
