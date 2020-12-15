@@ -89,9 +89,9 @@ As we categorize the similar variables, we can see that some variable have very 
 
 # Process
 ## Data analysis
-To prepare the data for modelling, we list the varialbes with missing values as shown below.
+To prepare the data for modelling, we list the varialbes with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, such as `Alley` a home having no fireplace or garage. In other cases where a numeric variable had missing data, we perform imputation with value another value from the same record, the mean value of the given column, or a zero value.
 
-![](https://pandao.github.io/editor.md/examples/images/4.jpg)
+![](images/missing_values.png)
 
-> Follow your heart.
+> Variables with missing value by percentage.
 
