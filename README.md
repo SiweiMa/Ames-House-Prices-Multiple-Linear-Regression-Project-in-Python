@@ -99,13 +99,11 @@ To prepare the data for modeling, we list the variables with missing values as s
 
 > Figure 1. Predictors with missing value by percentage.
 
-
 Also, as mentioned by [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), it is safe to remove any observation with `GrLivArea` higher than 4000, as shown in Fig 2. Furthermore, As mentioned in the [post](https://www.kaggle.com/juliencs/a-study-on-regression-applied-to-the-ames-dataset), we proceed to recode the ‘MSSubClass’ and ‘MoSold’ predictors to string categorical values, from the previous numeric encoding. 
 
 ![](images/outliers.png)
 
 > Figure 2. Suspicious data.
-
 
 Then we changed all categorical predictors into dummies. Note that `pd.get_dummies(data, drop_first=True)` sets the reference level based on the alphabet which is not applicable for this project. If the proportion of cases in the reference level is small, we expect to have a severe multicollinearity issue. In order to mitigate the multicollinearity, we set the dummy with the largest proportion of cases as the reference level.
 
@@ -121,7 +119,6 @@ After dropping some redundant variables, we still have 219 variables. It is natu
 
 > Figure 3. AIC, BIC, and adjusted R-squared are shown for the best models of each model number.
 
-
 As BIC penalizes model complexity more heavily compared with AIC and prevents false-positive findings more effectively, we chose BIC as model selection criteria to select the best model.
 
 ## Model diagnostics
@@ -131,13 +128,11 @@ As BIC penalizes model complexity more heavily compared with AIC and prevents fa
 
 > Figure 4. Histogram plot of residual of the "best" model.
 
-
 As shown in Fig 4, the histogram of the model’s residual values is fairly symmetric but has heavy tails and a more leptokurtic shape than a normal distribution. This is also visible on the QQ plot as the values towards the extremes of the plot deviate further from a straight line than the points in the middle as shown in Fig 5.
 
 ![](images/qqplot.png)
 
 > Figure 5. QQ plot of the "best" model.
-
 
 ### Homoscedasticity
 
@@ -146,7 +141,6 @@ In order to confirm that it makes sense to construct a linear model from this da
 ![](images/residual_fittedvalues.png)
 
 > Figure 6. Fitted values vs. residuals plot of the "best" model.
-
 
 ### Linearity
 
@@ -159,7 +153,6 @@ After scrutinizing the plot between Y and X, I found that LotArea suffers from s
 
 > Figure 7. Scatter plot of SalePrice over LotArea. Before the log transformation (left), After the log transformation (right).
 
-
 ### High influential points
 
 Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in the notebook.
@@ -167,7 +160,6 @@ Based on the externally studentized residual value, H leverage, and cook’s dis
 ![](images/influential_points.png)
 
 > Figure 8. influence plot of the "best" model.
-
 
 # Conclusion
 
