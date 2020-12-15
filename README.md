@@ -89,9 +89,59 @@ As we categorize the similar variables, we can see that some variable have very 
 
 # Process
 ## Data analysis
-To prepare the data for modelling, we list the varialbes with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, such as `Alley` a home having no fireplace or garage. In other cases where a numeric variable had missing data, we perform imputation with value another value from the same record, the mean value of the given column, or a zero value.
+To prepare the data for modelling, we list the varialbes with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, for example, in variable `Alley`, we assume that the missing value means that the house has no alley. In other cases, I assigned the values to missing cells based on the context. For example, the data indicates that a house indeed has a kitchen but `KitchenQual` information is missing. Thus, I filled the null with Typical/Average(TA). See the notebook for more details.
 
 ![](images/missing_values.png)
 
-> Variables with missing value by percentage.
+> Figure 1. Predictors with missing value by percentage.
 
+Also, as mentioned by [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), it is safe to remove any observation with `GrLivArea` higher than 4000, as shown in Fig 2. Furthermore, As mentioned in the [post](https://www.kaggle.com/juliencs/a-study-on-regression-applied-to-the-ames-dataset), we proceed to recode the ‘MSSubClass’ and ‘MoSold’ predictors to string categorical values, from the previous numeric encoding. 
+
+![](images/outliers.png)
+
+> Figure 2. Suspicious data.
+
+Then we changed all categorical predictors into dummies. Note that `pd.get_dummies(data, drop_first=True)` sets the reference level based on alphabet which is not applicable for this project. If the proportion of cases in the reference level is small, we expect to have severe multicollinearity issue. In order to mitigate the multicollinearity, we set the dummy with largest proportion of cases as reference level.
+
+Since multicollinearity between any of the predictors in the model will result in less reliable t-tests for the significance of a predictor, we decided to calculate the variance inflation factors (VIF’s) for the candidate predictor variables. The full initial model consists of 219 predictors with all of the attendant dummy variables. We iteratively check VIF scores for all parameters in the model, identify a few with the most extreme VIF’s, and remove them from the pool of candidates. For example, we found that `None` in `GarageFinish` are exactly the same as `None` in `GarageType`. After removing, the amount of parameters with a VIF beyond the threshold in the full model decreases to 29, with a majority of them being attendant dummy variables. But we won't drop more. Although Multicollinearity could result in a higher p-values and it becomes difficult for us to examine the relationship between the each predictor and response, we will see that we can still identify the significant terms in model selection.
+
+In addition, I also perform log-transformation on response to make sure that predicting expensive houses and cheap houses will affect the result equally.
+
+## Model selection
+After dropping some redundant variables, we still have 219 variables. It is natural to wonder which variables are the most important ones. The mixed stepwise selection was conducted to determine which variables are associated with the response.
+
+![](images/selection.png)
+
+> Figure 3. AIC, BIC and adjusted $R^2$ are shown for the best models of each model number.
+
+As BIC penalizes model complexity more heavily compared with AIC and prevent false positive findings more effectively, we chose BIC as model selection criteria to select the best model.
+
+## Model diagnostics
+
+![](images/histogram_residual.png)
+
+> Figure 4. Histogram plot of residual of the "best" model.
+
+As shown in Fig 4, the histogram of the model’s residual values is fairly symmetric but has heavy tails and a more leptokurtic shape than a normal distribution. This is also visible on the QQ plot as the values towards the extremes of the plot deviate further from a straight line than the points in the middle as shown in Fig 5.
+
+![](images/qqplot.png)
+
+> Figure 5. QQ plot of the "best" model.
+
+Based on the externally studentized residual value, H leverage, and cook’s distance represented by the area of the a point, we identify points at indices 1000, and 410 to be outliers with high influence. Therefore, the results of the Breusch-Pagan test are likely impacted by the presence of these high influence points. The models with and without the influential points were included in notebook.
+
+![](images/influential_points.png)
+
+> Figure 6. influence plot of the "best" model.
+
+In order to confirm that it makes sense to construct a linear model from this data, we visualize the initial full model’s fitted and residual values (Fig 7) to detect any presence of heteroscedasticity, which would violate another fundamental assumption of the classical linear regression model. Altough we rejected the null and concluded that there exists heteroscedasticity in the model by Breusch-Pagan test. We can see residuals scattered around zero in Fig 7. Also considering that the sample size is large (p/n>30), the skewness of data is not expected to impact the model estimation or inference very much.
+
+![](images/residual_fittedvalues.png)
+
+> Figure 7. Fitted values vs. residuals plot of the "best" model.
+
+After scrutinize the plot between Y and X, we found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
+
+       |
+:-------------------------:|:-------------------------:
+![](image/lotarea_price_linear.png)  |  ![](image/lotarea_price_log.png)
