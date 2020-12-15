@@ -140,8 +140,18 @@ In order to confirm that it makes sense to construct a linear model from this da
 
 > Figure 7. Fitted values vs. residuals plot of the "best" model.
 
-After scrutinize the plot between Y and X, we found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
+After scrutinize the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
 
        |
 :-------------------------:|:-------------------------:
 ![](image/lotarea_price_linear.png)  |  ![](image/lotarea_price_log.png)
+
+# Conclusion
+
+Based on our model trained on the Ames, Iowa housing prices data, we find that numeric features such as `OverallQual`, `OverallCond`, `GrLivArea`, `GarageCars` etc. have positive influence on sales price. The categorical features such as `NridgHt` in `Neighborhood`, `BrkFace` in `Exterior1st` etc. have positive influence on sales price. In contrast, the categorical features such as no `CentralAir`, commerial zoning classification (C) in `MSZoning` etc. have negative influence on sales price. See notebook for more details.
+
+The predicted R-squared is 0.928 and regular R-squared is 0.934. Since there is only a minor discrepancy between predicted R-squared and regular R-sqular, it seems that we did not overfit the model.
+
+# Prediction
+
+The final model was then tested on unseed data and submitted to Kaggle to be evalued by RMSE. The RMSE is 0.13637.
