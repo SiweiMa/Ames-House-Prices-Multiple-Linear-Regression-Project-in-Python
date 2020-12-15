@@ -92,17 +92,20 @@ As we categorize similar variables, we can see that some variables have very sim
 
 # Process
 ## Data analysis
+
 To prepare the data for modeling, we list the variables with missing values as shown below. Without dropping any observations, we fill the null data with ‘None’ or 0 in cases where the absence of data indicates the lack of a feature, for example, in variable `Alley`, we assume that the missing value means that the house has no alley. In other cases, I assigned the values to missing cells based on the context. For example, the data indicates that a house indeed has a kitchen but `KitchenQual` information is missing. Thus, I filled the null with Typical/Average(TA). See the notebook for more details.
 
 ![](images/missing_values.png)
 
 > Figure 1. Predictors with missing value by percentage.
 
+
 Also, as mentioned by [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), it is safe to remove any observation with `GrLivArea` higher than 4000, as shown in Fig 2. Furthermore, As mentioned in the [post](https://www.kaggle.com/juliencs/a-study-on-regression-applied-to-the-ames-dataset), we proceed to recode the ‘MSSubClass’ and ‘MoSold’ predictors to string categorical values, from the previous numeric encoding. 
 
 ![](images/outliers.png)
 
 > Figure 2. Suspicious data.
+
 
 Then we changed all categorical predictors into dummies. Note that `pd.get_dummies(data, drop_first=True)` sets the reference level based on the alphabet which is not applicable for this project. If the proportion of cases in the reference level is small, we expect to have a severe multicollinearity issue. In order to mitigate the multicollinearity, we set the dummy with the largest proportion of cases as the reference level.
 
@@ -111,11 +114,13 @@ Since multicollinearity between any of the predictors in the model will result i
 In addition, I also perform log-transformation on response to make sure that predicting expensive houses and cheap houses will affect the result equally.
 
 ## Model selection
+
 After dropping some redundant variables, we still have 219 variables. It is natural to wonder which variables are the most important ones. The mixed stepwise selection was conducted to determine which variables are associated with the response.
 
 ![](images/selection.png)
 
 > Figure 3. AIC, BIC, and adjusted R-squared are shown for the best models of each model number.
+
 
 As BIC penalizes model complexity more heavily compared with AIC and prevents false-positive findings more effectively, we chose BIC as model selection criteria to select the best model.
 
@@ -126,11 +131,13 @@ As BIC penalizes model complexity more heavily compared with AIC and prevents fa
 
 > Figure 4. Histogram plot of residual of the "best" model.
 
+
 As shown in Fig 4, the histogram of the model’s residual values is fairly symmetric but has heavy tails and a more leptokurtic shape than a normal distribution. This is also visible on the QQ plot as the values towards the extremes of the plot deviate further from a straight line than the points in the middle as shown in Fig 5.
 
 ![](images/qqplot.png)
 
 > Figure 5. QQ plot of the "best" model.
+
 
 ### Homoscedasticity
 
@@ -139,6 +146,7 @@ In order to confirm that it makes sense to construct a linear model from this da
 ![](images/residual_fittedvalues.png)
 
 > Figure 6. Fitted values vs. residuals plot of the "best" model.
+
 
 ### Linearity
 
@@ -150,6 +158,7 @@ After scrutinizing the plot between Y and X, I found that LotArea suffers from s
 </p>
 
 > Figure 7. Scatter plot of SalePrice over LotArea. Before the log transformation (left), After the log transformation (right).
+
 
 ### High influential points
 
