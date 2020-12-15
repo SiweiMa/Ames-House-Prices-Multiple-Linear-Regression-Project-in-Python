@@ -142,9 +142,8 @@ In order to confirm that it makes sense to construct a linear model from this da
 
 After scrutinizing the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
 
-Solarized dark             |  Solarized Ocean
 :-------------------------:|:-------------------------:
-![](image/lotarea_price_linear.png)  |  ![](image/lotarea_price_log.png)
+![](images/lotarea_price_linear.png)  |  ![](images/lotarea_price_log.png)
 
 # Conclusion
 
