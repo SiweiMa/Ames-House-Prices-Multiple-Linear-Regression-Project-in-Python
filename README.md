@@ -14,15 +14,15 @@ The data of this project came from [Kaggle](https://www.kaggle.com/c/house-price
 |Category|Index|Name|
 |--|--|--|
 |Type|1|MSSubClass|
-||15|BldgType
-||16|HouseStyle
-|Location|2|MSZoning
-||12|Neighborhood
-||13|Condition1
-||14|Condition2
-|Lot|3|LotFrontage
-||4|LotArea
-	7	LotShape
+|^|15|BldgType|
+|^|16|HouseStyle|
+|Location|2|MSZoning|
+||12|Neighborhood|
+||13|Condition1|
+||14|Condition2|
+|Lot|3|LotFrontage|
+||4|LotArea|
+||7|LotShape|
 	10	LotConfig
 Roof	21	RoofStyle
 	22	RoofMatl
