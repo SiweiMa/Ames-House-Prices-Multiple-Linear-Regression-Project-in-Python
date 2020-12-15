@@ -10,7 +10,10 @@ Give [Ames Housing dataset](http://jse.amstat.org/v19n3/decock.pdf), the project
 # Data Summary
 **Data source**
 The data of this project came from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques). 
+
 **Data Dictionary**
+As we categorize the similar variables, we can see that some variable have very similar information, such as MS90 in MSSubClass and Duplx in BldgType are exactly identical. The data structure issue will be detailed discussed in initial processing section.
+
 |Category|Index|Name|
 |--|--|--|
 |**Location**|2|MSZoning|
@@ -50,7 +53,7 @@ The data of this project came from [Kaggle](https://www.kaggle.com/c/house-price
 ||53|KitchenQual|
 |**Fireplace**|56|Fireplaces|
 ||57|FireplaceQu|
-|Garage|58|GarageType|
+|**Garage**|58|GarageType|
 ||59|GarageYrBlt|
 ||60|GarageFinish|
 ||61|GarageCars|
@@ -83,3 +86,12 @@ The data of this project came from [Kaggle](https://www.kaggle.com/c/house-price
 ||16|HouseStyle|
 |**OverallEstimation**|17|OverallQual|
 ||18|OverallCond|
+
+# Process
+## Data analysis
+To prepare the data for modelling, we list the varialbes with missing values as shown below.
+
+![](https://pandao.github.io/editor.md/examples/images/4.jpg)
+
+> Follow your heart.
+
