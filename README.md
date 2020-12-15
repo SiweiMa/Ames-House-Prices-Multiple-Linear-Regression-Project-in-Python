@@ -142,8 +142,11 @@ In order to confirm that it makes sense to construct a linear model from this da
 
 After scrutinizing the plot between Y and X, I found that LotArea suffers from severe non-linearity. Thus, we apply a simple log-transformation on the ‘LotArea’ variable to address the observed nonlinearity with this predictor variable. 
 
-:-------------------------:|:-------------------------:
-![](images/lotarea_price_linear.png)  |  ![](images/lotarea_price_log.png)
+<p float="left">
+  <img src="images/lotarea_price_linear.png" width="100" />
+  <img src="images/lotarea_price_log.png" width="100" /> 
+</p>
+
 
 # Conclusion
 
